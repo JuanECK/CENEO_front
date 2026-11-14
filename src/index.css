@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+@theme {
+  --font-roboto:"Roboto", sans-serif;
+}
+@layer base {
+  html, body, input, textarea, select, button {
+    font-family: var(--font-roboto);
+  }
+}
+
+.input-condensed {
+  font-family: "Roboto Condensed", sans-serif;
+  font-variant-numeric: tabular-nums; /* Opcional: alinea bien los números */
+}
+
+:root{
+  --blanco: #FFFFFF;
+  --disabled:#D9D9D9;
+  --GrisLight:#C5C5C5;
+  --GrisLightHigth:#c5c5c550;
+  --fondo: #1B687C;
+  --DeepBlue: #08242A;
+  --MediumBlue:#0B4858;
+  --btn-inactivo:#D9D9D9;
+  --Error-validacion-correo:#FF9500;
+  --PopUpErrores:#FFCC00;
+  --VerdeNeon:#02FFA2;
+  --VerdeNeonDisabled:#48836c;
+  --TextoInactivo:#0A7591;
+  --rojo:#FF3B30;
+  --rojoCancelar:#FF3B30;
+  --verdeSuccess:#34C759;
+}
+/* ANIMACIONES */
+
+
+/* 🎨 CONTENEDORES PRINCIPALES */ 
+.login-page-container {
+  @apply min-h-screen flex items-center justify-center p-4 bg-(--fondo);
+  
+}
+html, body, #root {
+  @apply m-0 p-0 w-full min-h-screen bg-(--fondo);
+}
+body{
+  @apply bg-(--fondo)
+}
+
+.login-card {
+  @apply max-w-md w-full rounded-2xl p-8;
+}
+
+/* 🛡️ SECCIÓN DE ENCABEZADO */
+.login-header {
+  @apply text-center mb-8;
+}
+
+.login-icon-box {
+  @apply inline-flex items-center justify-center mb-3 ;
+}
+
+/* 🚨 ALERTAS DE ERROR */
+.login-error-alert {
+  @apply p-4 bg-(--PopUpErrores) border border-none text-(--DeepBlue) text-sm rounded-full flex items-center gap-4
+  /* @apply fixed top-6 z-50 max-w-md w-[90%] mx-auto p-4 bg-(--btn-accion) border border-red-500/30 text-red-400 text-sm rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 transition-all duration-500 transform; */
+}
+
+.content-message-error{
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%); 
+  box-sizing: border-box;
+}
+
+/* 📝 FORMULARIOS E INPUTS */
+.login-form {
+  @apply space-y-5;
+}
+
+.form-label-box {
+  @apply flex flex-row-reverse mt-3;
+}
+.olvidaste-Contrasena{
+  @apply text-xs font-medium transition-colors text-white;
+}
+
+.form-input {
+  @apply w-full bg-white rounded-full px-4 py-3 focus:outline-none transition-colors text-sm;
+}
+
+/* Si un input tiene error, puedes usar CSS tradicional o una clase combinada */
+.form-input-error {
+  border-color: #ef4444 !important; /* CSS Tradicional puro y libre */
+}
+
+.form-error-text {
+  @apply pl-4 text-(--Error-validacion-correo) text-xs mt-1.5 font-medium;
+}
+
+/* ⚡ BOTONES */
+.btn-submit-secure {
+  @apply w-full bg-(--DeepBlue) text-white font-semibold py-3 px-4 rounded-full transition-colors focus:outline-none text-sm mt-2 flex items-center justify-center gap-2;
+}
+.btn-submit-secure:disabled {
+  @apply bg-(--btn-inactivo) cursor-not-allowed;
+}
+
+.spinner {
+  @apply w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin;
+}
+
+/* ============================================================================= */
+/* DASHBOARD ADMINISTRADOR */
+/* ============================================================================= */
+/* 🏢 DASHBOARD CONFIGURACIÓN GENERAL */
+.admin-wrapper {
+  @apply w-full min-h-screen flex justify-center bg-(--fondo) text-slate-100;
+}
+
+.dashboard-layout {
+@apply relative w-[1240px] min-w-[1240px] max-w-[1050px] flex items-start gap-4 p-4;
+     /* @apply min-h-screen w-full max-w-[1050px] mx-auto flex p-4; */
+    /* @apply min-h-screen w-full max-w-[1050px] mx-auto bg-(--fondo) text-slate-100 flex p-4; */
+  /* @apply min-h-screen min-w-[1050px] max-w-[1050px] bg-(--fondo) text-slate-100 flex p-4 ; */
+  /* @apply min-h-screen min-w-[1240px] bg-(--fondo) text-slate-100 flex p-4 ; */
+}
+
+.dashboard-layout-Admin {
+  @apply w-full min-w-0 flex-1 bg-(--fondo) text-slate-100 flex items-start gap-4 font-sans text-sm;
+
+  /* @apply  min-w-[1240px] bg-(--fondo) text-slate-100 flex gap-4 font-sans text-sm ; */
+}
+
+/* 📁 BARRA LATERAL (CENTROS DE NEGOCIO) */
+.sidebar-panel {
+  @apply w-64 min-w-64 h-[885px] bg-(--MediumBlue) rounded-2xl p-5 border border-[#1a5f74] flex flex-col justify-between;
+}
+
+.sidebar-title-btn {
+  @apply flex items-center justify-between px-0 py-2.5 font-semibold text-(--VerdeNeon) mb-6;
+}
+
+.sidebar-menu-list {
+  @apply space-y-1.5 flex-1;
+}
+
+.sidebar-menu-item {
+  @apply w-full flex items-center justify-center px-1 py-2 rounded-full transition-all font-light text-[14px] text-(--TextoInactivo) cursor-pointer;
+}
+
+.sidebar-menu-item.active {
+  @apply bg-(--DeepBlue) text-(--VerdeNeon) shadow-lg font-light px-1 py-1;
+}
+
+/* 📊 PANEL CENTRAL (LISTADO DE CLIENTES Y CARGOS) */
+.main-content-panel {
+  @apply flex-1 flex flex-col min-h-[885px];
+  /* @apply flex-1 flex flex-col ; */
+}
+
+.top-bar-user {
+  @apply px-4 py-2.5 inline-flex items-center gap-2 text-(--VerdeNeon) font-light text-xs self-start;
+}
+.top-bar-user-historial {
+  @apply flex justify-between px-4 py-2.5 items-center gap-2 text-(--VerdeNeon) font-light text-xs ;
+}
+
+
+.stats-card-header {
+  @apply  p-6 pb-0 flex flex-col;
+}
+
+.search-input-box {
+  @apply bg-(--MediumBlue) rounded-full px-4 py-2.5 pr-10 text-white placeholder-slate-400 focus:outline-none focus:border-[#00E5FF] w-72 text-xs;
+}
+
+.input-generico{
+  @apply bg-(--MediumBlue) rounded-full px-4 py-2.5 text-white focus:outline-none text-xs font-light;
+}
+
+.input-date{
+  @apply bg-(--MediumBlue) text-white font-light text-xs rounded-full px-4 py-2.5 outline-none border-none appearance-none cursor-pointer;
+}
+.custom-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;   /* Oculta el icono nativo */
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+  z-index: 20; /* Se posiciona por encima del SVG para recibir el click */
+}
+
+.input-style {
+  @apply w-full bg-(--MediumBlue) border-none rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none disabled:bg-slate-900/10 disabled:border-slate-800/20 disabled:cursor-not-allowed transition-all;
+}
+
+/* 🗂️ TABLAS DE DATOS */
+.celda-copiable {
+  cursor: copy; /* Muestra el icono de copiar al pasar el mouse */
+  transition: background-color 0.2s ease;
+}
+.celda-copiable:hover {
+ color: #f0f0f0; /* Un sutil cambio de fondo para dar feedback */
+}
+
+.table-container {
+  @apply flex-1 p-6 flex flex-col justify-between overflow-x-auto ;
+}
+
+.data-table {
+  @apply w-full  text-left border-collapse;
+}
+
+.data-table th {
+  @apply text-(--blanco) text-[15px] font-bold pb-4 px-3 text-xs tracking-wider;
+}
+
+.data-table td {
+  @apply py-1 px-3 text-xs font-medium transition-colors ;
+  /* @apply py-3.5 px-3 border-b border-[#114E60] text-slate-200 text-xs font-medium transition-colors; */
+}
+.data-table td:first-child {
+  @apply pl-5
+}
+
+.data-table tbody tr {
+  @apply hover:bg-[#155A6F]/40;
+}
+
+.data-table tbody tr.selected {
+  @apply bg-(--DeepBlue) ;
+  /* @apply bg-(--DeepBlue) border-l-4 border-l-[#00E5FF]; */
+}
+
+/* 🕹️ ICONOS DE ACCIONES */
+.action-icon-btn,
+.action-icon-btn-trash {
+  @apply p-1.5 text-white hover:text-(--DeepBlue) transition-all ;
+}
+
+.action-icon-btn span svg,
+.action-icon-btn-trash {
+  @apply text-white transition-all cursor-pointer;
+  fill: currentColor; 
+}
+
+.action-icon-btn:hover span svg {
+  @apply text-(--VerdeNeon);
+}
+.action-icon-btn-trash:hover span svg {
+  @apply text-[#FF3B30];
+}
+
+/* 💳 BARRA DE DETALLES LATERAL DERECHA (TARJETAHABIENTE COMPRAS) */
+.details-panel {
+    /* @apply absolute top-4 right-4 w-80 h-[885px] bg-[#0E3E4D] border border-[#1a5f74] rounded-2xl p-6 flex flex-col gap-6 overflow-y-auto z-50 shadow-2xl; */
+  @apply w-80 h-[885px] bg-[#0E3E4D] border border-[#1a5f74] rounded-2xl p-6 flex flex-col gap-6 overflow-y-auto;
+}
+
+.details-header {
+  @apply flex;
+}
+
+.purchase-history-box {
+  @apply flex-1 flex flex-col gap-4 mt-2;
+}
+
+.purchase-item-row {
+  @apply flex justify-between items-start py-1 border-b border-[#114E60]/50 text-xs;
+}
+
+/* 🔢 PAGINACIÓN */
+.pagination-container {
+  @apply flex justify-center items-center gap-1 text-xs font-semibold text-slate-400 mt-4;
+}
+
+.pagination-btn {
+  @apply hover:text-(--DeepBlue) text-(--VerdeNeon) px-2 py-1 transition-colors font-bold text-[13px];
+}
+
+.pagination-btn.active {
+  @apply text-(--DeepBlue) px-2.5 py-1;
+}
+.purchase-history-box {
+  @apply flex-1 flex flex-col gap-2;
+}
+
+/* 📥 Personalización de barra de desplazamiento fina (Scrollbar) para Webkit/Chrome */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #155A6F;
+  border-radius: 99px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #00E5FF;
+}
+
+/* ------------------------------------------------------- */
+/* 📎 COMDENEDOR DE CARGA DE ARCHIVO CUSTOM (FILE INPUT) */
+.file-upload-wrapper {
+  @apply border-2 border-dashed border-[#1a5f74] hover:border-[#00E5FF] rounded-xl p-4 text-center cursor-pointer transition-colors relative flex flex-col items-center justify-center gap-2;
+}
+
+.file-upload-wrapper.has-file {
+  @apply border-[#00E5FF] bg-[#008D96]/10;
+}
+
+.hidden-file-input {
+  @apply absolute inset-0 opacity-0 cursor-pointer w-full h-full;
+  
+}
+
+/* * {
+  outline: 1px solid red !important;
+} */
