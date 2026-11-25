@@ -8,6 +8,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(), //Activamos el compilador nativo de Tailwind v4
-    basicSsl()
+    // basicSsl() // Activar el SSL local instantáneo para forzar el HTTPS
   ],
 })

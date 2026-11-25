@@ -32,7 +32,7 @@ export const LoginPage: React.FC = () => {
     const verificarSesionActiva = async () => {
       
       try {
-        const response = await api.get('/auth/me');
+        const response = await api.get('/api/auth/me');
     
         if (response.data.status === 200) {
           const { idUsuario, idPerfil, nombreCompleto } = response.data;
@@ -125,7 +125,10 @@ export const LoginPage: React.FC = () => {
     }
 
     try {
-      const response = await api.post('/auth/login', { email, password });
+      console.log('peticion http')
+      const response = await api.post('/api/login', { email, password });
+
+      console.log({respuesta:response})
 
       if (response.data.status !== 200) {
         //muestra una u otra respuesta de error debajo de los input
@@ -142,33 +145,13 @@ export const LoginPage: React.FC = () => {
       }
 
       const { user } = response.data;
-      // console.log({user:user})
-      // const { user, redirectTo } = response.data;
 
       const perfilNumero = Number.parseInt(user.idPerfil, 10);
       let userRole: 1 | 2 = 2; //Número de roles disponibles
        if (perfilNumero === 1 || perfilNumero === 2) {
         userRole = 1; // 1 y 2 mapean al número 1
       }
-      //  else if (perfilNumero === 3 || perfilNumero === 4) {
-      //   userRole = 2; // 3 y 4 mapean al número 2
-      // }
 
-
-      // 🗺️ DICCIONARIO DE TRADUCCIÓN: Convierte el número ID de SQL Server a Rol de Frontend
-      // const mapaRoles: Record<string | number, 'superAdmin' | 'admin' | 'clienteApp' | 'capturista'> = {
-      //   1: 'superAdmin',
-      //   2: 'admin',
-      //   3: 'clienteApp',
-      //   4: 'capturista'
-      // };
-
-      // const mapaRoles: Record< number, 1 | 2 > = {
-      //   1:1,
-      //   2:1,
-      //   3:2,
-      //   4:2
-      // }
       login({ role: userRole, idPerfil:user.idPerfil, idUsuario: user.idUsuario, nombreCompleto:user.nombreCompleto });
       
       const mapaRutas: Record<1 | 2, string> = {
@@ -179,7 +162,6 @@ export const LoginPage: React.FC = () => {
       // Guardamos la sesión en el contexto global
       setTimeout(() => {
         
-        // console.log({ idUsuario: user.idUsuario })
         navigate(mapaRutas[userRole], { replace: true });
       }, 0);
 
