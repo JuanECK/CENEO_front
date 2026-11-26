@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../services/api';
+import { api, logoutSession } from '../services/api';
 // import { ModalAgregarCentroNegocios } from '../modals/ModalGeneral';
 
 interface InputCentroN{
@@ -58,21 +58,18 @@ export const AdminLayout: React.FC = () => {
 
     
     const cargaCentroNegocios = async () => {
-      // console.log({Centro:centroActivo})
   
-      const { idUsuario } = user!
-      setIdUsuario(idUsuario)
-      const response = await api.post("/admin/centroNegocios", { idUsuario });
+      // const { idUsuario } = user!
+      // setIdUsuario(idUsuario)
+      // const response = await api.post("/admin/centroNegocios", { idUsuario });
 
-      // console.log(response.data.data)
-
-      if( response.data.status === 200 ){
-        setCNegocio(response.data.data.cNegocios)
-        setDatosHijoActivo(response.data.data.cNegocios)
-        if(centroActivo === ''){
-          setCentroActivo(response.data.data.cNegocios[0]?.centroNegocio)
-        }
-      }
+      // if( response.data.status === 200 ){
+      //   setCNegocio(response.data.data.cNegocios)
+      //   setDatosHijoActivo(response.data.data.cNegocios)
+      //   if(centroActivo === ''){
+      //     setCentroActivo(response.data.data.cNegocios[0]?.centroNegocio)
+      //   }
+      // }
 
     }
 
@@ -96,6 +93,8 @@ export const AdminLayout: React.FC = () => {
 
     useEffect(()=>{
       cargaCentroNegocios()
+      // setIdUsuario(user?.idUsuario)
+      // console.log(user)
     },[])
 
     useEffect(()=>{
@@ -138,7 +137,53 @@ export const AdminLayout: React.FC = () => {
     
   };
 
+const creaUser = async () => {
+  const data:any[] = [{
+  email: "carlos_villagran@gmail.com",
+  password: "Admin123!",
+  nombre_admin: "JUAN VILLAGRAN",
+  tarjeta_eje: "4830520000000001",
+  clabe_eje: "646180670000000001",
+  identificador: "ONCECAPITAL",
+  nombre_cn: "EnriqueSegoviano",
+  cn: "100010"
+}]
+  const response = await api.post("/newUser", { data:data });
+        console.log(response)
+}
 
+const resetPass = async () => {
+  const data:any[] = [{
+  re_password: "Admin1234!",
+  tarjeta_eje:"4830520000000001",
+  cn: "100020"
+}]
+  const response = await api.post("/resetPassword", { data:data });
+        console.log(response)
+}
+
+const createCustomer = async () => {
+  const data:any[] = [{
+  clabe_cliente: "646180670010100099",
+  tarjeta_cliente: "4830520060126492",
+  nombre_cliente: "EUROPA  X1 X2",
+  cn: "100010"
+}]
+  const response = await api.post("/createCustomer", { data:data });
+        console.log(response)
+}
+
+const deleteCustomer = async () => {
+  const data:any[] = [{
+  tarjeta_cliente: "4830520000000001",
+  cn: "100020"
+}]
+  const response = await api.post("/deleteCustomer", { data:data });
+        console.log(response)
+}
+const endSess = async () => {
+  logoutSession(1)
+}
 
 //   const handleLogout = async () => {
 //     await logoutSession();
@@ -162,7 +207,7 @@ export const AdminLayout: React.FC = () => {
           <div>
             <div className="flex items-center justify-center gap-2 mb-6 px-2 mt-6 ">
               <svg width="90" height="29" viewBox="0 0 90 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_26_350)">
+                <g clipPath="url(#clip0_26_350)">
                 <path d="M40.7577 0.730978C39.9256 0.252768 38.9981 0 38.0705 0C37.143 0 36.195 0.245936 35.3493 0.737809C33.726 1.72839 32.7576 3.44311 32.7576 5.32862V23.6714C32.7576 25.5432 33.7533 27.2921 35.3493 28.228C36.1745 28.7404 37.0952 28.9932 38.0774 28.9932C39.0595 28.9932 39.9598 28.7267 40.7645 28.228C42.3878 27.2716 43.3903 25.5227 43.3903 23.6645V21.3281H40.0552V23.6645C40.0552 24.7439 39.1481 25.6525 38.0705 25.6525C36.9929 25.6525 36.0586 24.7576 36.0586 23.6645V5.32862C36.0586 4.23557 36.9588 3.34064 38.0705 3.34064C39.1822 3.34064 40.0552 4.23557 40.0552 5.32862V7.66502H43.3903V5.32862C43.3903 3.45677 42.4082 1.74205 40.7577 0.737809V0.730978Z" fill="white"/>
                 <path d="M44.4065 29H55.0393V25.6594H47.7416V21.2667H53.7298V17.926H47.7416V3.34064H55.0393V0H44.4065V29Z" fill="white"/>
                 <path d="M64.0897 0.730978C63.2508 0.245936 62.3369 0 61.3752 0C60.4136 0 59.5201 0.252768 58.6812 0.737809C57.0376 1.73522 56.0623 3.44994 56.0623 5.32862V29H59.3974V5.32862C59.3974 4.24923 60.3045 3.34064 61.3821 3.34064C62.4597 3.34064 63.394 4.23557 63.394 5.32862V29H66.7018V5.32862C66.7018 3.44311 65.7334 1.72839 64.0965 0.737809L64.0897 0.730978Z" fill="white"/>
@@ -222,9 +267,15 @@ export const AdminLayout: React.FC = () => {
                   +
                 </button>
               </div> */}
+              
             </div>
 
             <nav className="sidebar-menu-list">
+                <button type="button" className="sidebar-menu-item" onClick={creaUser} >crea usuario</button>
+                <button type="button" className="sidebar-menu-item" onClick={resetPass} >Resetea pass</button>
+                <button type="button" className="sidebar-menu-item" onClick={createCustomer} >crea Cliente</button>
+                <button type="button" className="sidebar-menu-item" onClick={deleteCustomer} >elimina Cliente</button>
+                <button type="button" className="sidebar-menu-item" onClick={endSess} >Salir</button>
               {cNegocio?.map((centro) => (
                 <button
                   type="button"
@@ -257,7 +308,7 @@ export const AdminLayout: React.FC = () => {
       <main className="main-content-panel">
 
         {/* <Outlet context={{ centroActivo, setCentroActivo }}/> */}
-        <Outlet context={{ centroActivo, setCentroActivo, centroId, setCentroId, idUsuario, setIdUsuario, setDatosHijo }}/>
+        <Outlet context={{ centroActivo, setCentroActivo, centroId, setCentroId, idUsuario, setIdUsuario, setDatosHijo, user }}/>
       </main>
       {/* {showModalAgregaCentroNegocio && (
         <ModalAgregarCentroNegocios

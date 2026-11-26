@@ -17,6 +17,7 @@
 
 :root{
   --blanco: #FFFFFF;
+  --fondoVentana: #3d3d3d;
   --disabled:#D9D9D9;
   --GrisLight:#C5C5C5;
   --GrisLightHigth:#c5c5c550;
@@ -42,10 +43,10 @@
   
 }
 html, body, #root {
-  @apply m-0 p-0 w-full min-h-screen bg-(--fondo);
+  @apply m-0 p-0 w-full min-h-screen bg-(--fondoVentana);
 }
 body{
-  @apply bg-(--fondo)
+  @apply bg-(--fondoVentana)
 }
 
 .login-card {
@@ -117,11 +118,11 @@ body{
 /* ============================================================================= */
 /* 🏢 DASHBOARD CONFIGURACIÓN GENERAL */
 .admin-wrapper {
-  @apply w-full min-h-screen flex justify-center bg-(--fondo) text-slate-100;
+  @apply w-full min-h-screen flex justify-center bg-(--fondoVentana) text-slate-100;
 }
 
 .dashboard-layout {
-@apply relative w-[1240px] min-w-[1240px] max-w-[1050px] flex items-start gap-4 p-4;
+@apply relative w-[1240px] min-w-[1240px] max-w-[1050px] flex items-start gap-4 p-4 bg-(--fondo);
      /* @apply min-h-screen w-full max-w-[1050px] mx-auto flex p-4; */
     /* @apply min-h-screen w-full max-w-[1050px] mx-auto bg-(--fondo) text-slate-100 flex p-4; */
   /* @apply min-h-screen min-w-[1050px] max-w-[1050px] bg-(--fondo) text-slate-100 flex p-4 ; */
@@ -157,7 +158,7 @@ body{
 
 /* 📊 PANEL CENTRAL (LISTADO DE CLIENTES Y CARGOS) */
 .main-content-panel {
-  @apply flex-1 flex flex-col min-h-[885px];
+  @apply flex-1 flex flex-col min-h-[885px] bg-(--fondo);
   /* @apply flex-1 flex flex-col ; */
 }
 

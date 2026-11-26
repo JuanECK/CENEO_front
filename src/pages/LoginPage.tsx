@@ -32,10 +32,10 @@ export const LoginPage: React.FC = () => {
     const verificarSesionActiva = async () => {
       
       try {
-        const response = await api.get('/api/auth/me');
+        const response = await api.get('/auth/me');
     
         if (response.data.status === 200) {
-          const { idUsuario, idPerfil, nombreCompleto } = response.data;
+          const {centroId, idUsuario, idPerfil, nombreCompleto } = response.data;
           
           const perfilNumero = Number.parseInt(idPerfil, 10);
           const userRole = (perfilNumero === 1 || perfilNumero === 2) ? 1 : 2;
@@ -43,7 +43,7 @@ export const LoginPage: React.FC = () => {
           // console.log(response.data)
 
         //   // Restauramos el estado global
-          login({ role: userRole, idPerfil:idPerfil, idUsuario:idUsuario, nombreCompleto:nombreCompleto });
+          login({ cn:centroId, role: userRole, idPerfil:idPerfil, idUsuario:idUsuario, nombreCompleto:nombreCompleto });
 
           const mapaRutas: Record<1 | 2, string> = {
             1: '/admin/dashboard',
@@ -125,10 +125,10 @@ export const LoginPage: React.FC = () => {
     }
 
     try {
-      console.log('peticion http')
-      const response = await api.post('/api/login', { email, password });
+      // console.log('peticion http')
+      const response = await api.post('/login', { email, password });
 
-      console.log({respuesta:response})
+      // console.log(response.data.user)
 
       if (response.data.status !== 200) {
         //muestra una u otra respuesta de error debajo de los input
@@ -136,8 +136,11 @@ export const LoginPage: React.FC = () => {
           case 500:
             setServerError(response.data.error.message);
           break
-          case 401:
+          case 404:
             response.data.error.code === '401-1' ? setErrors({email:response.data.error.message}) : setErrors({password:response.data.error.message})
+          break
+          case 409:
+            setServerError(response.data.error.message);
           break
         }
         setIsLoading(false);
@@ -145,6 +148,7 @@ export const LoginPage: React.FC = () => {
       }
 
       const { user } = response.data;
+      // console.log(user)
 
       const perfilNumero = Number.parseInt(user.idPerfil, 10);
       let userRole: 1 | 2 = 2; //Número de roles disponibles
@@ -152,7 +156,7 @@ export const LoginPage: React.FC = () => {
         userRole = 1; // 1 y 2 mapean al número 1
       }
 
-      login({ role: userRole, idPerfil:user.idPerfil, idUsuario: user.idUsuario, nombreCompleto:user.nombreCompleto });
+      login({ cn:user.centroId, role: userRole, idPerfil:user.idPerfil, idUsuario:user.idUsuario, nombreCompleto:user.nombreCompleto });
       
       const mapaRutas: Record<1 | 2, string> = {
         1: '/admin/dashboard',

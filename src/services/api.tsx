@@ -120,10 +120,11 @@ api.interceptors.response.use(
 );
 // ===========================================
 
-export const logoutSession = async (): Promise<boolean> => {
+export const logoutSession = async (idUsuario:number): Promise<boolean> => {
   try {
     // Al ser un método POST, el interceptor generará automáticamente la firma HMAC obligatoria
-    const response = await api.post('/auth/logout');
+  
+    const response = await api.post('/auth/logout',{data:{idUsuario, active:0}});
     return response.data.status === 200;
   } catch (error) {
     console.error('Error en el proceso de cierre de sesión de red:', error);

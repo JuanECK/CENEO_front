@@ -5,6 +5,7 @@ export type UserRole = 1 | 2;
 
 //interfaz aceptada para el usuario logeado
 interface User {
+  cn:string;
   idUsuario: string;
   // Usuario: string;
   idPerfil:number;

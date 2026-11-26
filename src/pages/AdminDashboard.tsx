@@ -539,7 +539,7 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     setPaginaActual(1);
     setBtnTarjetahabientes(true);
     enviarInformacionAlPadre();
-    // console.log(idUsuario)
+    // console.log(user)
   }, [centroActivo]);
 
   const enviarInformacionAlPadre = () => {
@@ -596,42 +596,36 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     setIsLoadingTable(true);
     try {
       // Hacemos la consulta parametrizada al Backend pasando la página actual
-      const response = await api.get(
-        `/admin/targetahabientes?idCentroN=${centroId}&page=${paginaActual}&limit=${limitePorPagina}`,
-      );
-      // console.log(response.data);
+      // const response = await api.get(
+      //   `/getCards?idCentroN=${user?.cn}&page=${paginaActual}&limit=${limitePorPagina}`,
+      // );
+      // // console.log(response.data);
 
-      if (response.data.status === 200) {
-        const { tarjetahabientes, paginacion, MontoTotalCargos } =
-          response.data.data;
+      // if (response.data.status === 200) {
+      //   const { tarjetahabientes, paginacion, MontoTotalCargos } =
+      //     response.data.data;
 
-        setTarjetahabientes(tarjetahabientes);
-        setTotalPaginas(paginacion.totalPaginas);
-        setTotalRegistros(paginacion.totalRegistros);
-        setMontoTotalCargos(MontoTotalCargos);
+      //   setTarjetahabientes(tarjetahabientes);
+      //   setTotalPaginas(paginacion.totalPaginas);
+      //   setTotalRegistros(paginacion.totalRegistros);
+      //   setMontoTotalCargos(MontoTotalCargos);
 
-
-        // console.log(tarjetahabientes)
-        // if (tarjetahabientes && tarjetahabientes.length > 0) {
-        //   setSelectedClient(tarjetahabientes[0]); // 👈 Asegúrate de que tenga el [0]
-        // } else {
-        //   setSelectedClient(null);
-        // }
-
-        // Seleccionamos automáticamente el primer cliente de la nueva página por estética
-        if (tarjetahabientes.length > 0) {
-          setSelectedClient(tarjetahabientes);
-          setBusquedaPaginacion(false)
+      //   // Seleccionamos automáticamente el primer cliente de la nueva página por estética
+      //   if (tarjetahabientes.length > 0) {
+      //     setSelectedClient(tarjetahabientes);
+      //     setBusquedaPaginacion(false)
          
-        }else{
+      //   }else{
           
-          setBusquedaPaginacion(true)
-        }
+      //     setBusquedaPaginacion(true)
+      //   }
 
-        // console.log(selectedClient);
-        // console.log(selectedClient)
-        return;
-      }
+      //   return;
+      // }
+      // if(response.data.status === 404){
+      //   // console.log(tarjetahabientes)
+      //   // setErrorMessage('sin datos!!!!')
+      // }
 
     } catch {
       console.error("Error cargando la tabla paginada de red:");
@@ -865,7 +859,7 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     // setIsLoggingOut(true);
 
     // 1. Avisamos al backend para que limpie cookies y ejecute el SP de SQL Server
-    await logoutSession();
+    await logoutSession(Number(user?.idUsuario));
 
     // 2. Limpiamos el estado global en el Frontend de React
     logout();
@@ -1297,6 +1291,13 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
                   ))}
                 </tbody>
               </table>
+              
+            )}
+           {tarjetahabientes && (
+               <h2 className="text-2xl font-[200] text-white mb-4">
+                sin datos
+              {/* {errorMessage} */}
+            </h2>
             )}
 
             {/* Componente de Paginación */}
