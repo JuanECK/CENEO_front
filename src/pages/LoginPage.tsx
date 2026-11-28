@@ -35,7 +35,7 @@ export const LoginPage: React.FC = () => {
         const response = await api.get('/auth/me');
     
         if (response.data.status === 200) {
-          const {centroId, idUsuario, idPerfil, nombreCompleto } = response.data;
+          const {nombreCentroNegocio, centroId, idUsuario, idPerfil, nombreCompleto } = response.data;
           
           const perfilNumero = Number.parseInt(idPerfil, 10);
           const userRole = (perfilNumero === 1 || perfilNumero === 2) ? 1 : 2;
@@ -43,7 +43,7 @@ export const LoginPage: React.FC = () => {
           // console.log(response.data)
 
         //   // Restauramos el estado global
-          login({ cn:centroId, role: userRole, idPerfil:idPerfil, idUsuario:idUsuario, nombreCompleto:nombreCompleto });
+          login({nombreCentroNegocio:nombreCentroNegocio, cn:centroId, role: userRole, idPerfil:idPerfil, idUsuario:idUsuario, nombreCompleto:nombreCompleto });
 
           const mapaRutas: Record<1 | 2, string> = {
             1: '/admin/dashboard',
@@ -156,7 +156,7 @@ export const LoginPage: React.FC = () => {
         userRole = 1; // 1 y 2 mapean al número 1
       }
 
-      login({ cn:user.centroId, role: userRole, idPerfil:user.idPerfil, idUsuario:user.idUsuario, nombreCompleto:user.nombreCompleto });
+      login({nombreCentroNegocio:user.nombreCentroNegocio, cn:user.centroId, role: userRole, idPerfil:user.idPerfil, idUsuario:user.idUsuario, nombreCompleto:user.nombreCompleto });
       
       const mapaRutas: Record<1 | 2, string> = {
         1: '/admin/dashboard',

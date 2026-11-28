@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { api, logoutSession } from "../services/api";
 // import { Modal, ModalAbono, ModalAgregarTarjetahabiente, ModalAviso, ModalContraseña, ModalDetalleAbono, ModalDetalleGasto, ModalEditaTarjetahabiente, ModalGasto} from "../modals/ModalGeneral";
 import { useOutletContext } from 'react-router-dom';
+import { ModalAbono } from "../modals/modals";
 // import { tr } from "zod/v4/locales/index.js";
 // import { number } from "zod";
 
@@ -30,16 +31,12 @@ interface RespuestaBackend {
 }
 
 interface InputTarjetahabiente {
-  apellidoP: string;
-  apellidoM: string;
-  correo: string;
-  fechaVencimiento: string;
-  idCentroN: number | null;
-  idTarjeta: number | null;
-  noTarjeta: string;
-  nombreCliente: string;
-  telefono: string;
-  noCliente: string;
+  alias: string;
+  estatus: string;
+  id_centroNegocio:  number | null;
+  id_tarjeta:  number | null;
+  id_tipoTarjeta: number | null;
+  numeroTarjeta: string;
 }
 interface selectCliente {
   Cliente: string;
@@ -99,16 +96,12 @@ export const AdminDashboard: React.FC = () => {
   // const [btnGuardarTarjetahabientes, setbtnGuardarTarjetahabientes] = useState(true);
   const [dataInputs, getDataInput] = useState<InputTarjetahabiente>({
 
-    apellidoP: "",   
-    apellidoM: "",      
-    correo: "",           
-    fechaVencimiento:"",
-    idCentroN: null,
-    idTarjeta:null,          
-    noTarjeta: "",       
-    nombreCliente: "",  
-    telefono: "",
-    noCliente:""
+    alias: "",
+    estatus: "",
+    id_centroNegocio: null,
+    id_tarjeta: null,
+    id_tipoTarjeta: null,
+    numeroTarjeta: "",
     
   });
   const [showModalElimina, setShowModalElimina] = useState(false);
@@ -470,41 +463,43 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     // if( estatus !== true ){
     // setBtnTarjetahabientes(false)
 
-      setLoading(true);
-      setSelectedClient(item);
+      // setLoading(true);
+      // setSelectedClient(item);
+      getDataInput(item)
 
-      try {
-        const response = await api.post("/admin/detalleCliente", { idTarjeta });
-        // console.log({Server:response.data.data.usuario.length === 0})
-        // console.log(console.log(response.data))
+
+//       try {
+//         const response = await api.post("/admin/detalleCliente", { idTarjeta });
+//         // console.log({Server:response.data.data.usuario.length === 0})
+//         // console.log(console.log(response.data))
   
-        if (response.data.status === 200) {
-          if( estatus !== true ){
-              setBtnTarjetahabientes(true)
-          }else{
-            response.data.data.usuario.length === 0 
-              ? setBtnTarjetahabientes(true)
-              : setBtnTarjetahabientes(false);
-          }
-          setDetallesCliente(response.data.data);
-          getDataInput(response.data.data.usuario);
-          // setbtnGuardarTarjetahabientes(true);
-          // setVarRandom(idCliente);
-          // console.log({targetaSelecionada:response.data});
-          // console.log(selectedClient.idTarjeta)
-          // console.log({dataInputs:dataInputs})
-          return;
-        }
-//  if(response.data.status === 401){
-//           setErrorMessageSesion(response.data.error.message)
-//       }else if(response.data.status === 403 ){
-//           setErrorMessageSesion(response.data.error.message)
+//         if (response.data.status === 200) {
+//           if( estatus !== true ){
+//               setBtnTarjetahabientes(true)
+//           }else{
+//             response.data.data.usuario.length === 0 
+//               ? setBtnTarjetahabientes(true)
+//               : setBtnTarjetahabientes(false);
+//           }
+//           setDetallesCliente(response.data.data);
+//           getDataInput(response.data.data.usuario);
+//           // setbtnGuardarTarjetahabientes(true);
+//           // setVarRandom(idCliente);
+//           // console.log({targetaSelecionada:response.data});
+//           // console.log(selectedClient.idTarjeta)
+//           // console.log({dataInputs:dataInputs})
+//           return;
+//         }
+// //  if(response.data.status === 401){
+// //           setErrorMessageSesion(response.data.error.message)
+// //       }else if(response.data.status === 403 ){
+// //           setErrorMessageSesion(response.data.error.message)
+// //       }
+//       } catch  {
+//         console.error("Error cargando los detalles del tarjetahabiente:");
+//       } finally {
+//         setLoading(false);
 //       }
-      } catch  {
-        console.error("Error cargando los detalles del tarjetahabiente:");
-      } finally {
-        setLoading(false);
-      }
 
       // return
     // }
@@ -514,25 +509,25 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
   };
 
   // Sincronizar el estado cuando la lista de selección (API) cambie
-  useEffect(() => {
-    if (detallesCliente?.usuario) {
-      // getDataInput({nombreCliente:detallesCliente.usuario.Cliente});
-    } else {
-      // Limpiar el formulario si no hay selección
-      getDataInput({
-      apellidoP: "",   
-      apellidoM: "",      
-      correo: "",           
-      fechaVencimiento:"",
-      idCentroN: null,
-      idTarjeta:null,          
-      noTarjeta: "",       
-      nombreCliente: "",  
-      telefono: "",
-      noCliente:""
-      });
-    }
-  }, [detallesCliente]);
+  // useEffect(() => {
+  //   if (detallesCliente?.usuario) {
+  //     // getDataInput({nombreCliente:detallesCliente.usuario.Cliente});
+  //   } else {
+  //     // Limpiar el formulario si no hay selección
+  //     getDataInput({
+  //     apellidoP: "",   
+  //     apellidoM: "",      
+  //     correo: "",           
+  //     fechaVencimiento:"",
+  //     idCentroN: null,
+  //     idTarjeta:null,          
+  //     noTarjeta: "",       
+  //     nombreCliente: "",  
+  //     telefono: "",
+  //     noCliente:""
+  //     });
+  //   }
+  // }, [detallesCliente]);
 
 // para regresar siempre a la pagina 1 cuando cambie el centro de negocio
   useEffect(() => {
@@ -578,16 +573,12 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     setDetallesCliente(null);
     setBtnTarjetahabientes(true)
     getDataInput({
-      apellidoP: "",   
-      apellidoM: "",      
-      correo: "",           
-      fechaVencimiento:"",
-      idCentroN: null,
-      idTarjeta:null,          
-      noTarjeta: "",       
-      nombreCliente: "",  
-      telefono: "",
-      noCliente:""
+      alias: "",
+      estatus: "",
+      id_centroNegocio: null,
+      id_tarjeta: null,
+      id_tipoTarjeta: null,
+      numeroTarjeta: "",
     });
   }, [paginaActual, centroActivo]); // 👈 Escucha los cambios de página
 
@@ -596,36 +587,35 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     setIsLoadingTable(true);
     try {
       // Hacemos la consulta parametrizada al Backend pasando la página actual
-      // const response = await api.get(
-      //   `/getCards?idCentroN=${user?.cn}&page=${paginaActual}&limit=${limitePorPagina}`,
-      // );
-      // // console.log(response.data);
+      const response = await api.get(
+        `/getCards?idCentroN=${user?.cn}&page=${paginaActual}&limit=${limitePorPagina}`,
+      );
+      console.log(response.data);
 
-      // if (response.data.status === 200) {
-      //   const { tarjetahabientes, paginacion, MontoTotalCargos } =
-      //     response.data.data;
+      if (response.data.status === 200) {
+        const { tarjetahabientes, paginacion, MontoTotalCargos } = response.data.data;
 
-      //   setTarjetahabientes(tarjetahabientes);
-      //   setTotalPaginas(paginacion.totalPaginas);
-      //   setTotalRegistros(paginacion.totalRegistros);
-      //   setMontoTotalCargos(MontoTotalCargos);
+        setTarjetahabientes(tarjetahabientes);
+        setTotalPaginas(paginacion.totalPaginas);
+        setTotalRegistros(paginacion.totalRegistros);
+        setMontoTotalCargos(MontoTotalCargos);
 
-      //   // Seleccionamos automáticamente el primer cliente de la nueva página por estética
-      //   if (tarjetahabientes.length > 0) {
-      //     setSelectedClient(tarjetahabientes);
-      //     setBusquedaPaginacion(false)
+        // Seleccionamos automáticamente el primer cliente de la nueva página por estética
+        if (tarjetahabientes.length > 0) {
+          setSelectedClient(tarjetahabientes);
+          setBusquedaPaginacion(false)
          
-      //   }else{
+        }else{
           
-      //     setBusquedaPaginacion(true)
-      //   }
+          setBusquedaPaginacion(true)
+        }
 
-      //   return;
-      // }
-      // if(response.data.status === 404){
-      //   // console.log(tarjetahabientes)
-      //   // setErrorMessage('sin datos!!!!')
-      // }
+        return;
+      }
+      if(response.data.status === 404){
+        // console.log(tarjetahabientes)
+        // setErrorMessage('sin datos!!!!')
+      }
 
     } catch {
       console.error("Error cargando la tabla paginada de red:");
@@ -686,7 +676,7 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     if (resultado === '1') {
       // console.log('Se agrego gasto correctamente' )
       cargosGlobales(centroId)
-      detalleClienteGastoAbono(dataInputs?.idTarjeta)
+      detalleClienteGastoAbono(dataInputs?.id_tarjeta)
       // setBtnTarjetahabientes(true)
       // setDetallesCliente(null)
 
@@ -701,7 +691,7 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
     // 3. Si se cumple la condición del "ok", se ejecuta la API aquí mismo
     if (resultado === '1') {
       // console.log('Se agrego gasto correctamente' )
-      detalleClienteGastoAbono(dataInputs?.idTarjeta)
+      detalleClienteGastoAbono(dataInputs?.id_tarjeta)
       // setBtnTarjetahabientes(true)
       // setDetallesCliente(null)
 
@@ -1179,32 +1169,82 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
                   <tr>
                     <th>Tarjetahabiente</th>
                     <th>No. de Tarjeta</th>
-                    <th className="text-center">Saldo</th>
-                    <td className="w-3 p-0"></td>
-                    <th className="text-center">Acciones</th>
+                    <th className="text-center">Saldo y operaciones</th>
+                    {/* <td className="w-3 p-0"></td> */}
+                    {/* <th className="text-center">Acciones</th> */}
                   </tr>
                 </thead>
                 <tbody>
                   {tarjetahabientes.map((item) => (
                     <tr
-                      key={item.idTarjeta}
+                      key={item.id_tarjeta}
+                      
                       onClick={()=>selecionaClienteTarjetabiente(item.idTarjeta, item, item.estatus)}
-                      className={`group ${selectedClient.idTarjeta === item.idTarjeta  ? "selected" : ""}`
+                      className={``
+                      // className={`group  ${selectedClient.idTarjeta === item.idTarjeta  ? "selected" : ""}`
                       }>
 
-                      <td className={`font-bold rounded-tl-full rounded-bl-full ${item.estatus ? 'text-(--GrisLight)' : 'text-(--DeepBlue) group-[.selected]:text-(--GrisLightHigth)'
-                      }`}>
-                        {item.Cliente}
+                      <td className={`font-bold rounded-tl-full rounded-bl-full ${item.estatus ? 'text-(--GrisLight)' : 'text-(--DeepBlue) group-[.selected]:text-(--GrisLightHigth)'}`}>
+                        {item.alias}
                       </td>
-                      <td className={`font-mono tracking-wider celda-copiable ${item.estatus === true ? "text-(--GrisLight)" : 'text-(--DeepBlue) group-[.selected]:text-(--GrisLightHigth)'}`}
+                      <td className={`font-mono tracking-wider celda-copiable ${item.estatus  ? "text-(--GrisLight)" : 'text-(--DeepBlue) group-[.selected]:text-(--GrisLightHigth)'}`}
                         onDoubleClick={(e) => copiarAlPortapapeles((e.target as HTMLTableCellElement).innerText)}>
-                        {formatDigitoBancarios(item.noTarjeta)}
+                        {formatDigitoBancarios(item.numeroTarjeta)}
                       </td>
+                      {/* <td className={`font-mono tracking-wider celda-copiable ${item.estatus === true ? "text-(--GrisLight)" : 'text-(--DeepBlue) group-[.selected]:text-(--GrisLightHigth)'}`}
+                        onDoubleClick={(e) => copiarAlPortapapeles((e.target as HTMLTableCellElement).innerText)}>
+                        {formatDigitoBancarios(item.numeroTarjeta)}
+                      </td> */}
                       <td className={`rounded-tr-full rounded-br-full text-center ${item.estatus === true ? "text-(--GrisLight)" : 'text-(--DeepBlue) group-[.selected]:text-(--GrisLightHigth)'}`}>
-                        {item.fechaVencimiento}
+                        
+                          <div className="flex justify-center  gap-2 ">
+                            {/* Agregar gasto */}
+                            <button type="button" onClick={() => setShowModalAbono(true)} className="action-icon-btn mx-2" title="Transferir">
+                              <span >
+                                <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 9.2168V0.462891C0 0.322266 0.0429688 0.210938 0.128906 0.128906C0.214844 0.0429688 0.328125 0 0.46875 0H15.0059C15.1465 0 15.2578 0.0429688 15.3398 0.128906C15.4258 0.210938 15.4688 0.322266 15.4688 0.462891V9.2168C15.4688 9.35742 15.4258 9.4707 15.3398 9.55664C15.2578 9.64258 15.1465 9.68555 15.0059 9.68555H0.46875C0.328125 9.68555 0.214844 9.64258 0.128906 9.55664C0.0429688 9.4707 0 9.35742 0 9.2168ZM1.07227 8.25586C1.07227 8.49414 1.18945 8.61328 1.42383 8.61328H14.0449C14.2793 8.61328 14.3965 8.49414 14.3965 8.25586V1.42969C14.3965 1.19141 14.2793 1.07227 14.0449 1.07227H1.42383C1.18945 1.07227 1.07227 1.19141 1.07227 1.42969V8.25586ZM1.68164 7.86328V1.82227C1.68164 1.72852 1.72852 1.68164 1.82227 1.68164H6.39258C6.08789 1.99414 5.84961 2.42188 5.67773 2.96484C5.50586 3.50391 5.41992 4.12695 5.41992 4.83398C5.41992 5.54102 5.50586 6.16797 5.67773 6.71484C5.85352 7.25781 6.0957 7.6875 6.4043 8.00391H1.82227C1.72852 8.00391 1.68164 7.95703 1.68164 7.86328ZM6.12305 4.83398C6.12305 4.22461 6.1875 3.69141 6.31641 3.23438C6.44922 2.77734 6.63477 2.42188 6.87305 2.16797C7.11523 1.91406 7.39453 1.78711 7.71094 1.78711C8.03906 1.78711 8.32617 1.91406 8.57227 2.16797C8.82227 2.42188 9.01562 2.77734 9.15234 3.23438C9.28906 3.69141 9.35742 4.22461 9.35742 4.83398C9.35742 5.44336 9.28906 5.97656 9.15234 6.43359C9.01562 6.89062 8.82227 7.24805 8.57227 7.50586C8.32617 7.75977 8.03906 7.88672 7.71094 7.88672C7.39453 7.88672 7.11523 7.75977 6.87305 7.50586C6.63477 7.24805 6.44922 6.89062 6.31641 6.43359C6.1875 5.97656 6.12305 5.44336 6.12305 4.83398ZM9.05273 8.00391C9.36523 7.6875 9.60938 7.25781 9.78516 6.71484C9.96484 6.16797 10.0547 5.54102 10.0547 4.83398C10.0547 4.12695 9.9668 3.50391 9.79102 2.96484C9.61523 2.42188 9.37109 1.99414 9.05859 1.68164H13.6465C13.7402 1.68164 13.7871 1.72852 13.7871 1.82227V7.86328C13.7871 7.95703 13.7402 8.00391 13.6465 8.00391H9.05273Z" fill="white"/>
+                                </svg>
+                              </span>
+                            </button>
+                            {/* Abono */}
+                            <button type="button" onClick={() => setShowModalAbono(true)} className="action-icon-btn mx-2" title="Reponer">
+                              <span>
+                                <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M11.4922 14.3359C10.9609 14.3359 10.5781 13.9453 10.5781 13.4219V10.6172H8.57031V12.3984C8.57031 13.7266 7.99219 14.2891 6.64062 14.2891H1.92969C0.578125 14.2891 0 13.7266 0 12.3984V9.39844C0 8.07031 0.578125 7.51562 1.92969 7.51562H3.57812V5.88281C3.57812 4.55469 4.15625 3.99219 5.50781 3.99219H10.5781V0.960938C10.5781 0.4375 10.9609 0 11.5078 0C11.8906 0 12.1484 0.171875 12.5625 0.5625L18.7266 6.32812C19.0312 6.60938 19.125 6.90625 19.125 7.17188C19.125 7.42969 19.0312 7.72656 18.7266 8.00781L12.5625 13.8281C12.1875 14.1797 11.875 14.3359 11.4922 14.3359ZM7.67969 12.4688C7.72656 12.4922 7.78125 12.4688 7.78125 12.4219V10.6172H5.21094C4.42969 10.6172 3.89844 10.3516 3.66406 9.83594C3.59375 9.6875 3.42969 9.71875 3.4375 9.875C3.47656 10.4922 3.75781 10.8281 4.52344 11.1484L7.67969 12.4688Z" fill="#D9D9D9"/>
+                                </svg>
+                              </span>
+                            </button>
+                            {/* Historial */}
+                            <button 
+                            type="button" 
+                            className="action-icon-btn mx-2" 
+                            title="Ver Saldo"
+                            onClick={() => setShowModalAbono(true)}
+                            >
+                              <span>
+                                <svg width="17" height="14" viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M0.691895 5.4209H1.37744C2.06934 2.31055 4.83691 0 8.14404 0C9.55322 0 10.8481 0.425293 11.9209 1.13623C12.562 1.54883 12.5747 2.27881 12.2383 2.75488C11.9272 3.18652 11.3242 3.41504 10.6133 2.98975C9.90869 2.52637 9.05811 2.25977 8.14404 2.25977C6.0874 2.25977 4.34814 3.57373 3.71973 5.4209H4.10059C4.64648 5.4209 4.77344 5.97314 4.48779 6.34766L2.77393 8.53125C2.57715 8.77881 2.20898 8.77881 2.01855 8.53125L0.29834 6.34766C0 5.97314 0.139648 5.4209 0.691895 5.4209ZM8.14404 11.6035C10.1943 11.6035 11.9336 10.2832 12.562 8.44238H12.1875C11.6353 8.44238 11.5083 7.89014 11.8003 7.51562L13.5078 5.33203C13.7046 5.08447 14.0791 5.08447 14.2695 5.33203L15.9834 7.51562C16.2817 7.89014 16.1484 8.44238 15.5898 8.44238H14.9106C14.2124 11.5464 11.4512 13.8633 8.14404 13.8633C6.73486 13.8633 5.43994 13.438 4.36084 12.7271C3.71973 12.3081 3.70703 11.5845 4.04346 11.1084C4.35449 10.6768 4.95752 10.4419 5.66846 10.8735C6.37305 11.3306 7.22363 11.6035 8.14404 11.6035Z" fill="#D9D9D9"/>
+                                </svg>
+                              </span>
+                            </button>
+                            {/* Historial Tarjeta */}
+                            {/* <button type="button" 
+                            className="action-icon-btn-trash" 
+                            title="Eliminar"
+                            onClick={()=> setShowModalEliminaTarjeta(true)}
+                            >
+                              <span>
+                                <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4.64844 13.3096C4.79427 13.3096 4.91276 13.2663 5.00391 13.1797C5.09505 13.0931 5.13835 12.9792 5.13379 12.8379L4.91504 5.40039C4.91504 5.25911 4.86719 5.14746 4.77148 5.06543C4.68034 4.97884 4.56413 4.93555 4.42285 4.93555C4.27246 4.93555 4.15169 4.97884 4.06055 5.06543C3.97396 5.15202 3.93294 5.26595 3.9375 5.40723L4.14258 12.8379C4.15169 12.9837 4.19954 13.0999 4.28613 13.1865C4.37728 13.2686 4.49805 13.3096 4.64844 13.3096ZM6.74023 13.3096C6.89062 13.3096 7.01139 13.2686 7.10254 13.1865C7.19824 13.0999 7.24609 12.986 7.24609 12.8447V5.40723C7.24609 5.26595 7.19824 5.15202 7.10254 5.06543C7.01139 4.97884 6.89062 4.93555 6.74023 4.93555C6.5944 4.93555 6.47363 4.97884 6.37793 5.06543C6.28678 5.15202 6.24121 5.26595 6.24121 5.40723V12.8447C6.24121 12.986 6.28678 13.0999 6.37793 13.1865C6.47363 13.2686 6.5944 13.3096 6.74023 13.3096ZM8.83887 13.3096C8.98926 13.3096 9.10775 13.2686 9.19434 13.1865C9.28548 13.1045 9.33333 12.9883 9.33789 12.8379L9.54297 5.40723C9.54753 5.26595 9.50423 5.15202 9.41309 5.06543C9.3265 4.97884 9.20801 4.93555 9.05762 4.93555C8.9209 4.93555 8.80469 4.97884 8.70898 5.06543C8.61784 5.14746 8.56999 5.26139 8.56543 5.40723L8.35352 12.8379C8.34896 12.9837 8.38997 13.0999 8.47656 13.1865C8.56771 13.2686 8.68848 13.3096 8.83887 13.3096ZM3.63672 3.14453V1.66797C3.63672 1.14388 3.79395 0.736003 4.1084 0.444336C4.42741 0.148112 4.86947 0 5.43457 0H8.03223C8.59733 0 9.03939 0.148112 9.3584 0.444336C9.67741 0.736003 9.83691 1.14388 9.83691 1.66797V3.14453H8.57227V1.72949C8.57227 1.55632 8.5153 1.41732 8.40137 1.3125C8.28743 1.20312 8.13477 1.14844 7.94336 1.14844H5.52344C5.33659 1.14844 5.1862 1.20312 5.07227 1.3125C4.95833 1.41732 4.90137 1.55632 4.90137 1.72949V3.14453H3.63672ZM0.608398 3.89648C0.439779 3.89648 0.296224 3.83724 0.177734 3.71875C0.0592448 3.60026 0 3.45671 0 3.28809C0 3.12402 0.0592448 2.98503 0.177734 2.87109C0.296224 2.7526 0.439779 2.69336 0.608398 2.69336H12.8789C13.0475 2.69336 13.1888 2.75033 13.3027 2.86426C13.4212 2.97819 13.4805 3.11947 13.4805 3.28809C13.4805 3.45671 13.4212 3.60026 13.3027 3.71875C13.1888 3.83724 13.0475 3.89648 12.8789 3.89648H0.608398ZM3.60254 15.4287C3.07389 15.4287 2.65007 15.2806 2.33105 14.9844C2.0166 14.6882 1.84798 14.2757 1.8252 13.7471L1.34668 3.75293H12.1338L11.6621 13.7402C11.6393 14.2689 11.4684 14.6813 11.1494 14.9775C10.8304 15.2783 10.4089 15.4287 9.88477 15.4287H3.60254Z" 
+                                  />
+                                </svg>
+                              </span>
+                            </button> */}
+                          </div>
+
                       </td>
 
-                      <td className="w-3 p-0 bg-(--fondo)! [.selected>&]:bg-(--fondo)!"></td>
+                      {/* <td className="w-3 p-0 bg-(--fondo)! [.selected>&]:bg-(--fondo)!"></td>
 
                       <td className="rounded-tl-full rounded-bl-full rounded-tr-full rounded-br-full ">
 
@@ -1221,83 +1261,16 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
                           </div>
 
                         :
-                          <div className="flex justify-center gap-2 ">
-                            {/* Agregar gasto */}
-                            {/* <button type="button" onClick={()=> prueba()} className="action-icon-btn" title="Agregar gasto">
-                              <span>
-                                <svg
-                                  width="14"
-                                  height="13"
-                                  viewBox="0 0 14 13"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path d="M11.5312 2.0918C12.1406 2.0918 12.5996 2.24414 12.9082 2.54883C13.2168 2.84961 13.3711 3.30273 13.3711 3.9082V9.97266C13.3711 10.5781 13.2246 11.0312 12.9316 11.332C12.6387 11.6367 12.2305 11.7891 11.707 11.7891H6.24609C6.40625 11.5117 6.53125 11.2148 6.62109 10.8984C6.71094 10.582 6.75586 10.2539 6.75586 9.91406C6.75586 9.39453 6.65625 8.9082 6.45703 8.45508C6.26172 7.99805 5.99023 7.5957 5.64258 7.24805C5.29492 6.90039 4.89258 6.62891 4.43555 6.43359C3.97852 6.23438 3.49023 6.13477 2.9707 6.13477V3.9082C2.9707 3.30273 3.12305 2.84961 3.42773 2.54883C3.73633 2.24414 4.19727 2.0918 4.81055 2.0918H11.5312ZM5.85938 2.32031C5.85938 1.88672 5.96094 1.49609 6.16406 1.14844C6.36719 0.796875 6.64258 0.517578 6.99023 0.310547C7.33789 0.103516 7.73047 0 8.16797 0C8.60547 0 8.99805 0.103516 9.3457 0.310547C9.69727 0.517578 9.97461 0.796875 10.1777 1.14844C10.3809 1.49609 10.4824 1.88672 10.4824 2.32031L9.53906 2.32617C9.53906 2.04492 9.48047 1.79688 9.36328 1.58203C9.25 1.36719 9.08984 1.19922 8.88281 1.07812C8.67969 0.953125 8.44141 0.890625 8.16797 0.890625C7.89844 0.890625 7.66016 0.953125 7.45312 1.07812C7.25 1.19922 7.08984 1.36719 6.97266 1.58203C6.85938 1.79688 6.80273 2.04492 6.80273 2.32617L5.85938 2.32031ZM2.97656 12.8906C2.57031 12.8906 2.1875 12.8125 1.82812 12.6562C1.46875 12.5039 1.15234 12.291 0.878906 12.0176C0.605469 11.7441 0.390625 11.4277 0.234375 11.0684C0.078125 10.709 0 10.3242 0 9.91406C0 9.50391 0.078125 9.12109 0.234375 8.76562C0.390625 8.40625 0.605469 8.08984 0.878906 7.81641C1.15234 7.53906 1.46875 7.32422 1.82812 7.17188C2.1875 7.01562 2.57031 6.9375 2.97656 6.9375C3.38672 6.9375 3.77148 7.01562 4.13086 7.17188C4.49023 7.32422 4.80664 7.53711 5.08008 7.81055C5.35352 8.08398 5.56641 8.40039 5.71875 8.75977C5.875 9.11914 5.95312 9.50391 5.95312 9.91406C5.95312 10.3203 5.875 10.7031 5.71875 11.0625C5.5625 11.4219 5.3457 11.7383 5.06836 12.0117C4.79492 12.2852 4.47852 12.5 4.11914 12.6562C3.75977 12.8125 3.37891 12.8906 2.97656 12.8906ZM2.9707 11.7773C3.08008 11.7773 3.16602 11.7441 3.22852 11.6777C3.29492 11.6113 3.32812 11.5254 3.32812 11.4199V10.2715H4.47656C4.58203 10.2715 4.66797 10.2383 4.73438 10.1719C4.80078 10.1094 4.83398 10.0234 4.83398 9.91406C4.83398 9.80469 4.80078 9.71875 4.73438 9.65625C4.66797 9.58984 4.58203 9.55664 4.47656 9.55664H3.32812V8.4082C3.32812 8.30273 3.29492 8.2168 3.22852 8.15039C3.16602 8.08398 3.08008 8.05078 2.9707 8.05078C2.86133 8.05078 2.77344 8.08398 2.70703 8.15039C2.64453 8.2168 2.61328 8.30273 2.61328 8.4082V9.55664H1.46484C1.35938 9.55664 1.27344 9.58984 1.20703 9.65625C1.14062 9.71875 1.10742 9.80469 1.10742 9.91406C1.10742 10.0234 1.14062 10.1094 1.20703 10.1719C1.27344 10.2383 1.35938 10.2715 1.46484 10.2715H2.61328V11.4199C2.61328 11.5254 2.64453 11.6113 2.70703 11.6777C2.77344 11.7441 2.86133 11.7773 2.9707 11.7773Z" />
-                                </svg>
-                              </span>
-                            </button> */}
-                            {/* Abono */}
-                            <button type="button" onClick={() => setShowModalAbono(true)} className="action-icon-btn" title="Agregar abono">
-                              <span>
-                                <svg
-                                  width="16"
-                                  height="10"
-                                  viewBox="0 0 16 10"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path d="M0 9.2168V0.462891C0 0.322266 0.0429688 0.210938 0.128906 0.128906C0.214844 0.0429687 0.328125 0 0.46875 0H15.0059C15.1465 0 15.2578 0.0429687 15.3398 0.128906C15.4258 0.210938 15.4688 0.322266 15.4688 0.462891V9.2168C15.4688 9.35742 15.4258 9.4707 15.3398 9.55664C15.2578 9.64258 15.1465 9.68555 15.0059 9.68555H0.46875C0.328125 9.68555 0.214844 9.64258 0.128906 9.55664C0.0429688 9.4707 0 9.35742 0 9.2168ZM1.07227 8.25586C1.07227 8.49414 1.18945 8.61328 1.42383 8.61328H14.0449C14.2793 8.61328 14.3965 8.49414 14.3965 8.25586V1.42969C14.3965 1.19141 14.2793 1.07227 14.0449 1.07227H1.42383C1.18945 1.07227 1.07227 1.19141 1.07227 1.42969V8.25586ZM1.68164 7.86328V1.82227C1.68164 1.72852 1.72852 1.68164 1.82227 1.68164H6.39258C6.08789 1.99414 5.84961 2.42188 5.67773 2.96484C5.50586 3.50391 5.41992 4.12695 5.41992 4.83398C5.41992 5.54102 5.50586 6.16797 5.67773 6.71484C5.85352 7.25781 6.0957 7.6875 6.4043 8.00391H1.82227C1.72852 8.00391 1.68164 7.95703 1.68164 7.86328ZM6.12305 4.83398C6.12305 4.22461 6.1875 3.69141 6.31641 3.23438C6.44922 2.77734 6.63477 2.42188 6.87305 2.16797C7.11523 1.91406 7.39453 1.78711 7.71094 1.78711C8.03906 1.78711 8.32617 1.91406 8.57227 2.16797C8.82227 2.42188 9.01562 2.77734 9.15234 3.23438C9.28906 3.69141 9.35742 4.22461 9.35742 4.83398C9.35742 5.44336 9.28906 5.97656 9.15234 6.43359C9.01562 6.89062 8.82227 7.24805 8.57227 7.50586C8.32617 7.75977 8.03906 7.88672 7.71094 7.88672C7.39453 7.88672 7.11523 7.75977 6.87305 7.50586C6.63477 7.24805 6.44922 6.89062 6.31641 6.43359C6.1875 5.97656 6.12305 5.44336 6.12305 4.83398ZM9.05273 8.00391C9.36523 7.6875 9.60938 7.25781 9.78516 6.71484C9.96484 6.16797 10.0547 5.54102 10.0547 4.83398C10.0547 4.12695 9.9668 3.50391 9.79102 2.96484C9.61523 2.42188 9.37109 1.99414 9.05859 1.68164H13.6465C13.7402 1.68164 13.7871 1.72852 13.7871 1.82227V7.86328C13.7871 7.95703 13.7402 8.00391 13.6465 8.00391H9.05273Z" />
-                                </svg>
-                              </span>
-                            </button>
-                            {/* Historial */}
-                            {/* <button 
-                            type="button" 
-                            className="action-icon-btn" 
-                            title="Ver historial"
-                            onClick={() => navigateToHI()}
-                            >
-                              <span>
-                                <svg
-                                  width="15"
-                                  height="11"
-                                  viewBox="0 0 15 11"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
-                                  <path d="M1.83984 10.7871C1.23047 10.7871 0.771484 10.6348 0.462891 10.3301C0.154297 10.0293 0 9.57617 0 8.9707V1.81641C0 1.21094 0.154297 0.757812 0.462891 0.457031C0.771484 0.152344 1.23047 0 1.83984 0H9.84375C10.457 0 10.916 0.152344 11.2207 0.457031C11.5293 0.757812 11.6836 1.21094 11.6836 1.81641V2.49609C11.4805 2.44141 11.2793 2.41406 11.0801 2.41406C10.8926 2.41406 10.709 2.43945 10.5293 2.49023C10.3535 2.53711 10.1855 2.60742 10.0254 2.70117C9.98633 2.69336 9.94531 2.6875 9.90234 2.68359C9.86328 2.67969 9.82031 2.67773 9.77344 2.67773H1.75781C1.49609 2.67773 1.29492 2.74805 1.1543 2.88867C1.01367 3.02539 0.943359 3.22852 0.943359 3.49805V9.02344C0.943359 9.29297 1.01367 9.49609 1.1543 9.63281C1.29492 9.77344 1.49609 9.84375 1.75781 9.84375H6.79102C6.75977 9.99609 6.74609 10.1504 6.75 10.3066C6.75391 10.4668 6.78906 10.627 6.85547 10.7871H1.83984ZM4.69336 4.78125C4.5918 4.78125 4.52148 4.76367 4.48242 4.72852C4.44336 4.68945 4.42383 4.61914 4.42383 4.51758V4.17188C4.42383 4.07031 4.44336 4 4.48242 3.96094C4.52148 3.92188 4.5918 3.90234 4.69336 3.90234H5.03906C5.14453 3.90234 5.2168 3.92188 5.25586 3.96094C5.29492 4 5.31445 4.07031 5.31445 4.17188V4.51758C5.31445 4.61914 5.29492 4.68945 5.25586 4.72852C5.2168 4.76367 5.14453 4.78125 5.03906 4.78125H4.69336ZM6.64453 4.78125C6.53906 4.78125 6.4668 4.76367 6.42773 4.72852C6.38867 4.68945 6.36914 4.61914 6.36914 4.51758V4.17188C6.36914 4.07031 6.38867 4 6.42773 3.96094C6.4668 3.92188 6.53906 3.90234 6.64453 3.90234H6.98438C7.08984 3.90234 7.16211 3.92188 7.20117 3.96094C7.24023 4 7.25977 4.07031 7.25977 4.17188V4.51758C7.25977 4.61914 7.24023 4.68945 7.20117 4.72852C7.16211 4.76367 7.08984 4.78125 6.98438 4.78125H6.64453ZM2.74805 6.69727C2.64648 6.69727 2.57422 6.67969 2.53125 6.64453C2.49219 6.60547 2.47266 6.53516 2.47266 6.43359V6.08789C2.47266 5.98633 2.49219 5.91797 2.53125 5.88281C2.57422 5.84375 2.64648 5.82422 2.74805 5.82422H3.09375C3.19531 5.82422 3.26562 5.84375 3.30469 5.88281C3.34766 5.91797 3.36914 5.98633 3.36914 6.08789V6.43359C3.36914 6.53516 3.34766 6.60547 3.30469 6.64453C3.26562 6.67969 3.19531 6.69727 3.09375 6.69727H2.74805ZM4.69336 6.69727C4.5918 6.69727 4.52148 6.67969 4.48242 6.64453C4.44336 6.60547 4.42383 6.53516 4.42383 6.43359V6.08789C4.42383 5.98633 4.44336 5.91797 4.48242 5.88281C4.52148 5.84375 4.5918 5.82422 4.69336 5.82422H5.03906C5.14453 5.82422 5.2168 5.84375 5.25586 5.88281C5.29492 5.91797 5.31445 5.98633 5.31445 6.08789V6.43359C5.31445 6.53516 5.29492 6.60547 5.25586 6.64453C5.2168 6.67969 5.14453 6.69727 5.03906 6.69727H4.69336ZM6.64453 6.69727C6.53906 6.69727 6.4668 6.67969 6.42773 6.64453C6.38867 6.60547 6.36914 6.53516 6.36914 6.43359V6.08789C6.36914 5.98633 6.38867 5.91797 6.42773 5.88281C6.4668 5.84375 6.53906 5.82422 6.64453 5.82422H6.98438C7.08984 5.82422 7.16211 5.84375 7.20117 5.88281C7.24023 5.91797 7.25977 5.98633 7.25977 6.08789V6.43359C7.25977 6.53516 7.24023 6.60547 7.20117 6.64453C7.16211 6.67969 7.08984 6.69727 6.98438 6.69727H6.64453ZM2.74805 8.61914C2.64648 8.61914 2.57422 8.59961 2.53125 8.56055C2.49219 8.52148 2.47266 8.45117 2.47266 8.34961V8.00391C2.47266 7.90234 2.49219 7.83398 2.53125 7.79883C2.57422 7.75977 2.64648 7.74023 2.74805 7.74023H3.09375C3.19531 7.74023 3.26562 7.75977 3.30469 7.79883C3.34766 7.83398 3.36914 7.90234 3.36914 8.00391V8.34961C3.36914 8.45117 3.34766 8.52148 3.30469 8.56055C3.26562 8.59961 3.19531 8.61914 3.09375 8.61914H2.74805ZM4.69336 8.61914C4.5918 8.61914 4.52148 8.59961 4.48242 8.56055C4.44336 8.52148 4.42383 8.45117 4.42383 8.34961V8.00391C4.42383 7.90234 4.44336 7.83398 4.48242 7.79883C4.52148 7.75977 4.5918 7.74023 4.69336 7.74023H5.03906C5.14453 7.74023 5.2168 7.75977 5.25586 7.79883C5.29492 7.83398 5.31445 7.90234 5.31445 8.00391V8.34961C5.31445 8.45117 5.29492 8.52148 5.25586 8.56055C5.2168 8.59961 5.14453 8.61914 5.03906 8.61914H4.69336ZM6.64453 8.61914C6.53906 8.61914 6.4668 8.59961 6.42773 8.56055C6.38867 8.52148 6.36914 8.45117 6.36914 8.34961V8.00391C6.36914 7.90234 6.38867 7.83398 6.42773 7.79883C6.4668 7.75977 6.53906 7.74023 6.64453 7.74023H6.98438C7.08984 7.74023 7.16211 7.75977 7.20117 7.79883C7.24023 7.83398 7.25977 7.90234 7.25977 8.00391V8.34961C7.25977 8.45117 7.24023 8.52148 7.20117 8.56055C7.16211 8.59961 7.08984 8.61914 6.98438 8.61914H6.64453ZM8.58984 4.78125C8.48828 4.78125 8.41602 4.76367 8.37305 4.72852C8.33398 4.68945 8.31445 4.61914 8.31445 4.51758V4.17188C8.31445 4.07031 8.33398 4 8.37305 3.96094C8.41602 3.92188 8.48828 3.90234 8.58984 3.90234H8.8418C8.71289 4.17188 8.63477 4.46484 8.60742 4.78125H8.58984ZM8.58984 6.69727C8.48828 6.69727 8.41602 6.67969 8.37305 6.64453C8.33398 6.60547 8.31445 6.53516 8.31445 6.43359V6.08789C8.31445 5.98633 8.33398 5.91797 8.37305 5.88281C8.41602 5.84375 8.48828 5.82422 8.58984 5.82422H8.72461C8.75977 5.97656 8.80859 6.12305 8.87109 6.26367C8.9375 6.40039 9.01172 6.5293 9.09375 6.65039C9.07812 6.66992 9.05664 6.68359 9.0293 6.69141C9.00586 6.69531 8.97461 6.69727 8.93555 6.69727H8.58984ZM8.25 10.7812C8.02734 10.7812 7.85156 10.7324 7.72266 10.6348C7.59766 10.5371 7.53516 10.4004 7.53516 10.2246C7.53516 9.95117 7.61523 9.66602 7.77539 9.36914C7.93945 9.06836 8.17578 8.78711 8.48438 8.52539C8.79297 8.25977 9.16602 8.04492 9.60352 7.88086C10.041 7.7168 10.5332 7.63477 11.0801 7.63477C11.627 7.63477 12.1172 7.7168 12.5508 7.88086C12.9883 8.04492 13.3594 8.25977 13.6641 8.52539C13.9727 8.78711 14.209 9.06836 14.373 9.36914C14.5371 9.66602 14.6191 9.95117 14.6191 10.2246C14.6191 10.4004 14.5547 10.5371 14.4258 10.6348C14.3008 10.7324 14.127 10.7812 13.9043 10.7812H8.25ZM11.0801 6.88477C10.7793 6.88477 10.5 6.80273 10.2422 6.63867C9.98828 6.47461 9.7832 6.25391 9.62695 5.97656C9.4707 5.69531 9.39258 5.38086 9.39258 5.0332C9.39258 4.68945 9.4707 4.38086 9.62695 4.10742C9.7832 3.83008 9.98828 3.61328 10.2422 3.45703C10.5 3.29688 10.7793 3.2168 11.0801 3.2168C11.377 3.2168 11.6523 3.29492 11.9062 3.45117C12.1641 3.60742 12.3711 3.82227 12.5273 4.0957C12.6836 4.36914 12.7617 4.67773 12.7617 5.02148C12.7617 5.37305 12.6836 5.68945 12.5273 5.9707C12.375 6.25195 12.1699 6.47461 11.9121 6.63867C11.6582 6.80273 11.3809 6.88477 11.0801 6.88477Z" />
-                                </svg>
-                              </span>
-                            </button> */}
-                            {/* Historial Tarjeta */}
-                            {/* <button type="button" 
-                            className="action-icon-btn-trash" 
-                            title="Eliminar"
-                            onClick={()=> setShowModalEliminaTarjeta(true)}
-                            >
-                              <span>
-                                <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M4.64844 13.3096C4.79427 13.3096 4.91276 13.2663 5.00391 13.1797C5.09505 13.0931 5.13835 12.9792 5.13379 12.8379L4.91504 5.40039C4.91504 5.25911 4.86719 5.14746 4.77148 5.06543C4.68034 4.97884 4.56413 4.93555 4.42285 4.93555C4.27246 4.93555 4.15169 4.97884 4.06055 5.06543C3.97396 5.15202 3.93294 5.26595 3.9375 5.40723L4.14258 12.8379C4.15169 12.9837 4.19954 13.0999 4.28613 13.1865C4.37728 13.2686 4.49805 13.3096 4.64844 13.3096ZM6.74023 13.3096C6.89062 13.3096 7.01139 13.2686 7.10254 13.1865C7.19824 13.0999 7.24609 12.986 7.24609 12.8447V5.40723C7.24609 5.26595 7.19824 5.15202 7.10254 5.06543C7.01139 4.97884 6.89062 4.93555 6.74023 4.93555C6.5944 4.93555 6.47363 4.97884 6.37793 5.06543C6.28678 5.15202 6.24121 5.26595 6.24121 5.40723V12.8447C6.24121 12.986 6.28678 13.0999 6.37793 13.1865C6.47363 13.2686 6.5944 13.3096 6.74023 13.3096ZM8.83887 13.3096C8.98926 13.3096 9.10775 13.2686 9.19434 13.1865C9.28548 13.1045 9.33333 12.9883 9.33789 12.8379L9.54297 5.40723C9.54753 5.26595 9.50423 5.15202 9.41309 5.06543C9.3265 4.97884 9.20801 4.93555 9.05762 4.93555C8.9209 4.93555 8.80469 4.97884 8.70898 5.06543C8.61784 5.14746 8.56999 5.26139 8.56543 5.40723L8.35352 12.8379C8.34896 12.9837 8.38997 13.0999 8.47656 13.1865C8.56771 13.2686 8.68848 13.3096 8.83887 13.3096ZM3.63672 3.14453V1.66797C3.63672 1.14388 3.79395 0.736003 4.1084 0.444336C4.42741 0.148112 4.86947 0 5.43457 0H8.03223C8.59733 0 9.03939 0.148112 9.3584 0.444336C9.67741 0.736003 9.83691 1.14388 9.83691 1.66797V3.14453H8.57227V1.72949C8.57227 1.55632 8.5153 1.41732 8.40137 1.3125C8.28743 1.20312 8.13477 1.14844 7.94336 1.14844H5.52344C5.33659 1.14844 5.1862 1.20312 5.07227 1.3125C4.95833 1.41732 4.90137 1.55632 4.90137 1.72949V3.14453H3.63672ZM0.608398 3.89648C0.439779 3.89648 0.296224 3.83724 0.177734 3.71875C0.0592448 3.60026 0 3.45671 0 3.28809C0 3.12402 0.0592448 2.98503 0.177734 2.87109C0.296224 2.7526 0.439779 2.69336 0.608398 2.69336H12.8789C13.0475 2.69336 13.1888 2.75033 13.3027 2.86426C13.4212 2.97819 13.4805 3.11947 13.4805 3.28809C13.4805 3.45671 13.4212 3.60026 13.3027 3.71875C13.1888 3.83724 13.0475 3.89648 12.8789 3.89648H0.608398ZM3.60254 15.4287C3.07389 15.4287 2.65007 15.2806 2.33105 14.9844C2.0166 14.6882 1.84798 14.2757 1.8252 13.7471L1.34668 3.75293H12.1338L11.6621 13.7402C11.6393 14.2689 11.4684 14.6813 11.1494 14.9775C10.8304 15.2783 10.4089 15.4287 9.88477 15.4287H3.60254Z" 
-                                  />
-                                </svg>
-                              </span>
-                            </button> */}
-                          </div>
+
                         }
 
-                      </td>
+                      </td> */}
 
                     </tr>
                   ))}
                 </tbody>
               </table>
               
-            )}
-           {tarjetahabientes && (
-               <h2 className="text-2xl font-[200] text-white mb-4">
-                sin datos
-              {/* {errorMessage} */}
-            </h2>
             )}
 
             {/* Componente de Paginación */}
@@ -1609,6 +1582,22 @@ const detalleClienteGastoAbono = async(idTarjeta:number | null) => {
           </div>
         </div>
       )}
+
+         { showModalAbono && ( 
+          <ModalAbono
+          icono={
+            <svg width="33" height="21" viewBox="0 0 33 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 19.2017V0.964355C0 0.671387 0.0895182 0.439453 0.268555 0.268555C0.447591 0.0895182 0.683594 0 0.976562 0H31.2622C31.5552 0 31.7871 0.0895182 31.958 0.268555C32.137 0.439453 32.2266 0.671387 32.2266 0.964355V19.2017C32.2266 19.4946 32.137 19.7306 31.958 19.9097C31.7871 20.0887 31.5552 20.1782 31.2622 20.1782H0.976562C0.683594 20.1782 0.447591 20.0887 0.268555 19.9097C0.0895182 19.7306 0 19.4946 0 19.2017ZM2.23389 17.1997C2.23389 17.6961 2.47803 17.9443 2.96631 17.9443H29.2603C29.7485 17.9443 29.9927 17.6961 29.9927 17.1997V2.97852C29.9927 2.4821 29.7485 2.23389 29.2603 2.23389H2.96631C2.47803 2.23389 2.23389 2.4821 2.23389 2.97852V17.1997ZM3.50342 16.3818V3.79639C3.50342 3.60107 3.60107 3.50342 3.79639 3.50342H13.3179C12.6831 4.15446 12.1867 5.04557 11.8286 6.17676C11.4705 7.2998 11.2915 8.59782 11.2915 10.0708C11.2915 11.5438 11.4705 12.8499 11.8286 13.9893C12.1948 15.1204 12.6994 16.0156 13.3423 16.6748H3.79639C3.60107 16.6748 3.50342 16.5771 3.50342 16.3818ZM12.7563 10.0708C12.7563 8.80127 12.8906 7.69043 13.1592 6.73828C13.4359 5.78613 13.8224 5.04557 14.3188 4.5166C14.8234 3.98763 15.4053 3.72314 16.0645 3.72314C16.748 3.72314 17.3462 3.98763 17.8589 4.5166C18.3797 5.04557 18.7826 5.78613 19.0674 6.73828C19.3522 7.69043 19.4946 8.80127 19.4946 10.0708C19.4946 11.3403 19.3522 12.4512 19.0674 13.4033C18.7826 14.3555 18.3797 15.1001 17.8589 15.6372C17.3462 16.1662 16.748 16.4307 16.0645 16.4307C15.4053 16.4307 14.8234 16.1662 14.3188 15.6372C13.8224 15.1001 13.4359 14.3555 13.1592 13.4033C12.8906 12.4512 12.7563 11.3403 12.7563 10.0708ZM18.8599 16.6748C19.5109 16.0156 20.0195 15.1204 20.3857 13.9893C20.7601 12.8499 20.9473 11.5438 20.9473 10.0708C20.9473 8.59782 20.7642 7.2998 20.3979 6.17676C20.0317 5.04557 19.5231 4.15446 18.8721 3.50342H28.4302C28.6255 3.50342 28.7231 3.60107 28.7231 3.79639V16.3818C28.7231 16.5771 28.6255 16.6748 28.4302 16.6748H18.8599Z" fill="#02FFA2"/>
+            </svg>
+          }
+          title={!idMovimientoEdicion ? 'Abono a tarjeta' : 'Edición de Abono' }
+          tarjetahabiente={`${dataInputs.alias}`}
+          cta={formatDigitoBancarios(dataInputs?.numeroTarjeta)}
+          cn={dataInputs?.id_centroNegocio}
+          tarjeta_cliente = {dataInputs.numeroTarjeta}
+          onClose={handleAgregaAbono}
+        />)}
+
         {/* Llamada al componentes con propiedades dinámicas */}
 
         {/* {showModalEditaTarjetahadiente && (

@@ -165,7 +165,7 @@ const resetPass = async () => {
 const createCustomer = async () => {
   const data:any[] = [{
   clabe_cliente: "646180670010100099",
-  tarjeta_cliente: "4830520060126492",
+  tarjeta_cliente: "4830520060126493",
   nombre_cliente: "EUROPA  X1 X2",
   cn: "100010"
 }]
@@ -271,12 +271,13 @@ const endSess = async () => {
             </div>
 
             <nav className="sidebar-menu-list">
-                <button type="button" className="sidebar-menu-item" onClick={creaUser} >crea usuario</button>
+                {/* <button type="button" className="sidebar-menu-item" onClick={creaUser} >crea usuario</button>
                 <button type="button" className="sidebar-menu-item" onClick={resetPass} >Resetea pass</button>
                 <button type="button" className="sidebar-menu-item" onClick={createCustomer} >crea Cliente</button>
                 <button type="button" className="sidebar-menu-item" onClick={deleteCustomer} >elimina Cliente</button>
-                <button type="button" className="sidebar-menu-item" onClick={endSess} >Salir</button>
-              {cNegocio?.map((centro) => (
+                <button type="button" className="sidebar-menu-item" onClick={endSess} >Salir</button> */}
+                <label htmlFor="" className={`sidebar-menu-item active`}>{user?.nombreCentroNegocio}</label>
+              {/* {cNegocio?.map((centro) => (
                 <button
                   type="button"
                   key={centro.idCentroN}
@@ -285,7 +286,7 @@ const endSess = async () => {
                 >
                   {centro.centroNegocio}
                 </button>
-              ))}
+              ))} */}
             </nav>
           </div>
 
